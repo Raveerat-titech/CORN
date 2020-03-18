@@ -9,7 +9,7 @@ import keras.backend as K
 from my_merge import seven_three, three_seven, nine_one, six_four, eight_two
 
 
-class XNet(object):
+class CORN(object):
     def __init__(self, input_channel_count, output_channel_count, first_layer_filter_count):
         self.INPUT_IMAGE_SIZE = 256
         self.CONCATENATE_AXIS = -1
