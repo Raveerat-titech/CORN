@@ -18,69 +18,13 @@ class XNet(object):
         self.CONV_PADDING = (1, 1)
         self.DECONV_FILTER_SIZE = 2
         self.DECONV_STRIDE = 2
-
-        # ###########    Xnet    #################
-        #
-        # # (256 x 256 x input_channel_count)  64
-        # inputs = Input((self.INPUT_IMAGE_SIZE, self.INPUT_IMAGE_SIZE, input_channel_count)) #ordinary
-        # output_ordinary, a,b,c,d,e,f,g,filter_count_enc = self._encoder(inputs,first_layer_filter_count)
-        #
-        # inputs_R = Input((self.INPUT_IMAGE_SIZE, self.INPUT_IMAGE_SIZE, input_channel_count))
-        # output_reverse,A,B,C,D,E,F,G,filter_count_enc = self._encoder(inputs_R,first_layer_filter_count)
-        #
-        # dec7_o = self._decoder(output_ordinary, a,b,c,d,e,f,g, filter_count_enc, output_channel_count,first_layer_filter_count)
-        # dec7_r = self._decoder(output_reverse, A,B,C,D,E,F,G, filter_count_enc, output_channel_count,first_layer_filter_count)
-        #
-        # # (256 x 256 x output_channel_count)64
-        # dec8_o = Activation(activation='relu')(dec7_o)
-        # dec8_o = Conv2DTranspose(output_channel_count, self.DECONV_FILTER_SIZE, strides=self.DECONV_STRIDE)(dec8_o)
-        # dec8_o = Activation(activation='sigmoid')(dec8_o)  # comment this! for losvas loss
-        #
-        # # (256 x 256 x output_channel_count)64
-        # dec8_r = Activation(activation='relu')(dec7_r)
-        # dec8_r = Conv2DTranspose(output_channel_count, self.DECONV_FILTER_SIZE, strides=self.DECONV_STRIDE)(dec8_r)
-        # dec8_r = Activation(activation='sigmoid')(dec8_r)  # comment this! for losvas loss
-        #
-        # dec8 = three_seven([dec8_o,dec8_r])
-        # self.YNET = Model(input=[inputs,inputs_R], output=dec8)
-        # #################################
-
-        ###########    u2net    #################
-        #
-        # # (256 x 256 x input_channel_count)  64
-        # inputs = Input((self.INPUT_IMAGE_SIZE, self.INPUT_IMAGE_SIZE, input_channel_count)) #ordinary
-        # output_ordinary, a,b,c,d,e,f,g,filter_count_enc = self._encoder(inputs,first_layer_filter_count)
-        #
-        # inputs_R = Input((self.INPUT_IMAGE_SIZE, self.INPUT_IMAGE_SIZE, input_channel_count))
-        # output_reverse,A,B,C,D,E,F,G,filter_count_enc = self._encoder(inputs_R,first_layer_filter_count)
-        #
-        # dec7_o = self._decoder(output_ordinary, a,b,c,d,e,f,g, filter_count_enc, output_channel_count,first_layer_filter_count)
-        # dec7_r = self._decoder(output_reverse, A,B,C,D,E,F,G, filter_count_enc, output_channel_count,first_layer_filter_count)
-        #
-        # # (256 x 256 x output_channel_count)64
-        # dec8_o = Activation(activation='relu')(dec7_o)
-        # dec8_o = Conv2DTranspose(output_channel_count, self.DECONV_FILTER_SIZE, strides=self.DECONV_STRIDE)(dec8_o)
-        # dec8_o = Activation(activation='sigmoid')(dec8_o)  # comment this! for losvas loss
-        #
-        # # (256 x 256 x output_channel_count)64
-        # dec8_r = Activation(activation='relu')(dec7_r)
-        # dec8_r = Conv2DTranspose(output_channel_count, self.DECONV_FILTER_SIZE, strides=self.DECONV_STRIDE)(dec8_r)
-        # dec8_r = Activation(activation='sigmoid')(dec8_r)  # comment this! for losvas loss
-        #
-        # dec8 = concatenate([dec8_o, dec8_r], axis=-1)
-        #
-        # self.YNET = Model(input=[inputs,inputs_R], output=dec8)
-        ################################
-
-        ########## XYnet ########
+        
         # (256 x 256 x input_channel_count)  64
         inputs = Input((self.INPUT_IMAGE_SIZE, self.INPUT_IMAGE_SIZE, input_channel_count))  # ordinary
         output_ordinary, a, b, c, d, e, f, g, filter_count_enc = self._encoder(inputs, first_layer_filter_count)
         inputs_R = Input((self.INPUT_IMAGE_SIZE, self.INPUT_IMAGE_SIZE, input_channel_count))
         output_reverse, A, B, C, D, E, F, G, filter_count_enc = self._encoder(inputs_R, first_layer_filter_count)
 
-        # added = add([output_ordinary, output_reverse])
-        # added = multiply([output_ordinary, output_reverse])
         added_o = seven_three([output_ordinary, output_reverse])
         added_r = seven_three([output_reverse, output_ordinary])
 
